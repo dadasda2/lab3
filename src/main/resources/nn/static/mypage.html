@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Другой</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app-4">
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>inStock</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="prod in products">
+            <td v-text="prod.name">Oranges</td>
+            <td v-text="prod.price">0.99</td>
+            <td v-text="prod.inStock">true</td>
+        </tr>
+        </tbody>
+    </table>
+    <div>
+        <p><label>name <input type="text" v-model="product.name"></label></p>
+        <p><label>price <input type="number" v-model="product.price"></label></p>
+        <p><label>inStock <input type="checkbox" v-model="product.inStock"></label></p>
+        <button v-on:click="addProduct">Add</button>
+    </div>
+</div>
+<script>
+
+    var eventSource = new EventSource(window.location.origin + "/events");
+
+    var app4 = new Vue({
+        el: '#app-4',
+        data: {
+            products: [
+                {name: 'Car', price: 12, inStock: false},
+                {name: 'House', price: 112, inStock: false},
+                {name: 'Ice cream', price: 2, inStock: true}
+            ],
+            product: {name: '', price: 0, inStock: false}
+        },
+        methods: {
+            addProduct: async function () {
+                let resp = await fetch(window.location.origin + "/postForm", {
+                    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(this.product)
+                });
+
+                this.products = await resp.json();
+            }
+        },
+        mounted: async function () {
+            let resp = await fetch(window.location.origin + "/listProducts");
+            this.products = await resp.json();
+
+            eventSource.onmessage = async (r) => {
+                console.log("onmessage = " + r);
+                let resp = await fetch(window.location.origin + "/listProducts");
+                this.products = await resp.json();
+            }
+        }
+    });
+</script>
+</body>
+</html>
