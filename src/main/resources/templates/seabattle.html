@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Игра Морской бой</title>
+    <link th:href="@{SegoePrint/fonts.css}" rel="stylesheet">
+    <link th:href="@{seabattle.style.css}" rel="stylesheet">
+</head>
+
+<body>
+<div id="matrix" style="position: fixed; left:20px; top:50px;"></div>
+<div class="wrap">
+    <div class="battlefield">
+        <div id="text_top" class="text-top">Расстановка кораблей</div>
+        <div class="outer clearfix">
+            <!-- playing field user -->
+            <div class="field field-user">
+                <div id="field_user" class="ships"></div>
+            </div>
+            <!-- /playing field user -->
+
+            <!-- playing field comp -->
+            <div class="field field-comp" data-hidden="true">
+                <div id="field_comp" class="ships"></div>
+            </div>
+            <!-- /playing field comp -->
+
+            <!-- instruction -->
+            <div id="instruction" class="instruction" data-hidden="false">
+                <div id="type_placement" class="type-placement-box">
+                    1. <span class="link" data-target="random">Случайным образом</span><br>
+                </div>
+            </div>
+            <!-- /instruction -->
+        </div>
+        <span id="play" class="btn-play" data-hidden="true">Играть</span>
+        <div id="text_btm" class="text-btm"></div>
+    </div>
+</div>
+
+<script th:src="@{seabattle.function.js}"></script>
+</body>
+</html>
